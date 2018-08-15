@@ -1,21 +1,20 @@
-fetch(`http://localhost/php_api_test/fetch.php`)
-  .then((response) => response.json())
-  .then((response) => {
-    console.log(response);
-    })
-
 const userForm = document.getElementById('user');
 userForm.addEventListener('submit', function(event){
   event.preventDefault();
 });
 
-let button = document.getElementById('submit');
+let submitButton = document.getElementById('submit');
 let username = document.getElementById('name')
 let phone = document.getElementById('phone')
 let mail = document.getElementById('email');
 let date = document.getElementById('date');
 
-button.addEventListener('click', function(){
+submitButton.addEventListener('click', function(){
+  let formValues = arrangeFormValues();
+  inputToDataBase(formValues);
+})
+
+function arrangeFormValues(){
   let seatingOne;
   let seatingTwo;
   if(document.getElementById('seatingOne').checked) {
@@ -25,6 +24,8 @@ button.addEventListener('click', function(){
     seatingOne = 0;
     seatingTwo = 1;
   }
+
+  //Set the values of the form input to an object, to be used later in inputToDataBase
   let formValues = {
     "name": username.value,
     "phone": phone.value,
@@ -33,14 +34,13 @@ button.addEventListener('click', function(){
     "seatingOne": seatingOne,
     "seatingTwo": seatingTwo
   }
-  console.log(formValues);
-  
-  inputToDB(formValues);
-})
+  return formValues;
+}
 
-function inputToDB(formValues){
+function inputToDataBase(formValues){
+  //Uses the GET method to send the formValues object as a GET parameter
   let dbParam = JSON.stringify(formValues);
-  fetch('http://localhost/php_api_test/post.php?x=' + dbParam,{
+  fetch('http://localhost/php_api_test/post.php?formData=' + dbParam,{
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -51,16 +51,9 @@ function inputToDB(formValues){
     .then((response) => console.log(response))
 }
 
-/* 
-let obj = { "name":"julia", "email":"julia@gmail.com", "phone":"+462345678" };
-let dbParam = JSON.stringify(obj);
-
-fetch('http://localhost/php_api_test/post.php?x=' + dbParam,{
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+//Console logs a row from the booking table, from fetch.php
+fetch(`http://localhost/php_api_test/fetch.php`)
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response);
     })
-    .then((response) => response)
-    .then((response) => console.log(response)) */

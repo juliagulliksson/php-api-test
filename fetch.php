@@ -1,6 +1,7 @@
 <?php
 require 'db.php';
   
+//Example of a fetch from the booking table
   $statement = $pdo->prepare(
     "SELECT * FROM booking WHERE date = '2018-08-15' AND seatingOne = 1 ");
   $statement->execute(); 
