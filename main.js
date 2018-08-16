@@ -39,8 +39,8 @@ function arrangeFormValues(){
 
 function inputToDataBase(formValues){
   //Uses the GET method to send the formValues object as a GET parameter
-  let dbParam = JSON.stringify(formValues);
-  fetch('http://localhost/php_api_test/post.php?formData=' + dbParam,{
+  formValues = JSON.stringify(formValues);
+  fetch('http://localhost/php-api-test/post.php?formData=' + formValues,{
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -52,8 +52,8 @@ function inputToDataBase(formValues){
 }
 
 //Console logs a row from the booking table, from fetch.php
-fetch(`http://localhost/php_api_test/fetch.php`)
+fetch(`http://localhost/php-api-test/fetch.php`)
   .then((response) => response.json())
   .then((response) => {
     console.log(response);
-    })
+  })
